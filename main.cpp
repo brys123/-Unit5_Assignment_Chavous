@@ -5,6 +5,7 @@
 #include<string>
 #include<vector>
 #include<iomanip>
+#include<fstream>
 using namespace std; 
 
 struct MenuItem
@@ -60,8 +61,8 @@ void populateMenu(vector<MenuItem> &entireMenu)
 void showMenu(vector<MenuItem> &m)
 {
   cout << fixed << setprecision(2);//set doubles to 2 decimal places
-  cout << "DrT's Effcient Menu" << endl; 
-  cout << "ADD  \tNAME \t COST \tREMOVE\tCOUNT\tDESC"<<endl; 
+  cout << "\x1B[36mDrT's Effcient Menu\033[0m" << endl; 
+  cout << "\x1B[31mADD  \tNAME \t COST \tREMOVE\tCOUNT\tDESC\033[0m"<<endl; 
   for(int i = 0; i < m.size(); i++)
   {
     cout << m[i].addLetter << ")" << setw(10) << m[i].name 
@@ -72,11 +73,13 @@ void showMenu(vector<MenuItem> &m)
 
 }
 
+double subtotal = 0.0; 
+
+
 void acceptOrder(vector<MenuItem> &m)
 {
   char option = '\0';// the user-selected menu item
-  double subtotal = 0.0; 
-
+  
   do
   {
     cout << "\nPlease choose an item (x to Exit): ";
@@ -128,9 +131,10 @@ void acceptOrder(vector<MenuItem> &m)
   }while(option != 'x' && option != 'X'); 
   cout << "\nThank you for placing your order.\n" << endl; 
   //handle the tip process here
+ 
+  string option1;
   double tip = 0.2 * subtotal;
   double total = subtotal + (subtotal * 0.09) + tip;
-  string option1;
 
   cout << "Subtotal: \n" << subtotal << endl;
   cout << "\nPlease input your desired tip amount: " << endl;
@@ -150,7 +154,7 @@ void acceptOrder(vector<MenuItem> &m)
 
   //handle reciept generation here
   cout << "\n* * * Reciept * * *" << endl;
-  cout << "\nSubtotal: " << subtotal << endl;
+  cout << "\n  Subtotal: " << subtotal << endl;
   cout << "       Tax: " << subtotal * 0.09 << endl;
   cout << "       Tip: " << tip << endl;
   cout << "\n     Total: " << subtotal + (subtotal * 0.09) + tip << endl;
@@ -185,36 +189,41 @@ void acceptOrder(vector<MenuItem> &m)
         cout << "Process complete." << endl;
       }
 
-void printReceipt(vector<MenuItem> &m, double subtotal);
+
+}
+
+void printReceipt(vector<MenuItem>, double subtotal){
+  ofstream print("receipt.txt");
+  double tip = 0.2 * subtotal;
+  double total = subtotal + (subtotal * 0.09) + tip;
+
+  cout << "\n* * * Reciept * * *" << endl;
+  print << "Subtotal: " << subtotal << endl;
+  print << "Tax: " << subtotal * 0.09 << endl;
+  print << "Tip: " << tip << endl;
+  print << "Total: " << total << endl;
+  print.close();
 
 }
 
 int main() 
 {
+  string option;
 
-  vector<MenuItem> wholeMenu; 
-  populateMenu(wholeMenu); //put some default values in the menu
-  showMenu(wholeMenu); //print the current data of the menu on screen 
-  acceptOrder(wholeMenu); 
-  
-/*
+  do {
+   vector<MenuItem> wholeMenu; 
+    populateMenu(wholeMenu); //put some default values in the menu
+    showMenu(wholeMenu); //print the current data of the menu on screen 
+    acceptOrder(wholeMenu); 
+    printReceipt(wholeMenu, subtotal);
+    cout << "\nA: New order" << endl;
+    cout << "B: Exit program" << endl;
+    cin >> option;
+    cout << "\n" << endl;
+} 
+while(option == "A" || option == "a");
 
-7. Then generate receipt on screen void printReceipt(vector<MenuItem> &m, double subtotal); //pass the subtotal and/or other needed variables in this regard
+cout << "PROGRAM TERMINATED" << endl;
 
-8. next steps generate that same
-
-   receipt as an output HTML (or text) document
-
-   webpage Wow Factor! Whaaat!!!
-
-9. Loop program to start over for a
-
-  new user, until exit of the whole program.
-
-10 -  Bells and Whistles
-
-    ADD COLOR To the MENU to ENHANCE OUTPUT
-    */
-  
   return 0; 
 }

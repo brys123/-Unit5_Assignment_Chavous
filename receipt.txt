@@ -1,0 +1,4 @@
+Subtotal: 6
+Tax: 0.54
+Tip: 1.2
+Total: 7.74
