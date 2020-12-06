@@ -126,70 +126,78 @@ void acceptOrder(vector<MenuItem> &m)
             }
     }
   }while(option != 'x' && option != 'X'); 
-  cout << "\nThank you for placing your order." << endl; 
+  cout << "\nThank you for placing your order.\n" << endl; 
   //handle the tip process here
   double tip = 0.2 * subtotal;
+  double total = subtotal + (subtotal * 0.09) + tip;
   string option1;
 
   cout << "Subtotal: \n" << subtotal << endl;
-  cout << "Please input your desired tip amount: " << endl;
+  cout << "\nPlease input your desired tip amount: " << endl;
   cout << "A) 20%: " << tip << endl;
   cout << "B) Enter custom amount." << endl;
   cin >> option1;
 
   if(option1 == "A" || option1 == "A")
       {
-        cout << "Tip: " << tip << endl;
-        cout << "\nTotal: " << subtotal + (subtotal * 0.9) + tip << endl;
+        cout << "\nTip: \n" << tip << endl;
       }
       else if(option1 == "B" || option1 == "b") {
         cin >> tip;
-        cout << "Tip: " << tip << endl;
-        cout << "\nTotal: " << subtotal + (subtotal * 0.9) + tip << endl;
+        cout << "\nTip: \n" << tip << endl;
       }
 
+
   //handle reciept generation here
-  cout << "* * * Reciept * * *" << endl;
+  cout << "\n* * * Reciept * * *" << endl;
   cout << "\nSubtotal: " << subtotal << endl;
-  cout << "Tax: " << subtotal * 0.09 << endl;
-  cout << "Tip: " << tip << endl;
-  cout << "\nTotal: " << subtotal + (subtotal * 0.09) + tip << endl;
+  cout << "       Tax: " << subtotal * 0.09 << endl;
+  cout << "       Tip: " << tip << endl;
+  cout << "\n     Total: " << subtotal + (subtotal * 0.09) + tip << endl;
 
   cout << "\nPlease select payment type: " << endl;
-  cout << "A) Cash" << tip << endl;
+  cout << "A) Cash" << endl;
   cout << "B) Credit Card" << endl;
   cin >> option1;
 
+  double tender;
+  double change;
+
   if(option1 == "A" || option1 == "A")
       {
-        cout << "Tip: " << tip << endl;
-        cout << "\nTotal: " << subtotal + (subtotal * 0.9) + tip << endl;
+        cout << "\nPlease enter the tender amount: " << endl;
+        cin >> tender;
+
+        if(tender >= total){
+          change = tender - total;
+          cout << "Change: " << change << endl;
+        }else if (tender < total)
+        {
+          cout << "Not enough funds." << endl;
+        }
+
+
       }
-      else {
-        cin >> tip;
-        cout << "Tip: " << tip << endl;
-        cout << "\nTotal: " << subtotal + (subtotal * 0.9) + tip << endl;
+      else if (option1 == "B" || option1 == "b")
+      {
+        cout << "Please swipe card." << endl;
+        cout << "..." << endl;
+        cout << "Process complete." << endl;
       }
 
+void printReceipt(vector<MenuItem> &m, double subtotal);
 
 }
 
 int main() 
 {
+
   vector<MenuItem> wholeMenu; 
   populateMenu(wholeMenu); //put some default values in the menu
   showMenu(wholeMenu); //print the current data of the menu on screen 
   acceptOrder(wholeMenu); 
-
- /* 
-
-4. Accept tender amount from user
-
-   If(tender >= (Totaldue + tax + tip))
-
-5. if cash calc change
-
-6. if card process payment
+  
+/*
 
 7. Then generate receipt on screen void printReceipt(vector<MenuItem> &m, double subtotal); //pass the subtotal and/or other needed variables in this regard
 
